@@ -1,31 +1,27 @@
-# Étape 1 : Build de l'application
+# Étape 1 : build de l'application React
 FROM node:18 AS build
-
-# Définir le répertoire de travail
 WORKDIR /app
 
-# Copier les fichiers nécessaires
+# Copier les fichiers de dépendances et installer
 COPY package*.json ./
 RUN npm install
-RUN npm install react-scripts
 
-
+# Copier tout le code source
 COPY . .
 
-# Build de l'application React
+# Lancer le build
 RUN npm run build
 
-# Étape 2 : Serveur Nginx pour servir l'application
+# Étape 2 : serveur Nginx pour servir le build
 FROM nginx:alpine
 
-# Copier les fichiers de build dans le dossier de Nginx
+# Copier le build dans le dossier web de Nginx
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Copier la configuration de Nginx personnalisée si nécessaire
-# COPY nginx.conf /etc/nginx/nginx.conf
+# (Optionnel) Ajouter nginx.conf si tu utilises React Router
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Exposer le port 80
 EXPOSE 80
 
-# Commande par défaut
+# Démarrer nginx
 CMD ["nginx", "-g", "daemon off;"]
