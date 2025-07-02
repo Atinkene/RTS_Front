@@ -1,0 +1,40 @@
+/* ResultsPopup.css */
+.glassmorphism-night {
+  background: rgba(20, 20, 40, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.glassmorphism-night-header {
+  background: linear-gradient(to right, rgba(30, 30, 60, 0.5), rgba(60, 60, 120, 0.5));
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-neon-blue {
+  color: #00DDEB;
+}
+
+.text-neon-purple {
+  color: #BB86FC;
+}
+
+.bg-night-dark {
+  background: #0A0A1A;
+}
+
+.table-row-hover:hover {
+  background: rgba(30, 30, 60, 0.5);
+}
+
+.button-neon {
+  background: #00DDEB;
+  color: #0A0A1A;
+  transition: all 0.3s ease;
+}
+
+.button-neon:hover {
+  background: #00B7C3;
+  box-shadow: 0 0 10px rgba(0, 221, 235, 0.5);
+}
