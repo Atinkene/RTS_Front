@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useMemo } from 'react';
 import ReactFlow, { addEdge, removeElements, ReactFlowProvider, useNodesState, useEdgesState, Controls, Background, MiniMap } from 'react-flow-renderer';
-import { Search, Save, Download, Undo, Redo, Grid, Moon, Sun, Play, Settings, Copy, Trash2, ZoomIn, ZoomOut } from 'lucide-react';
+import { Search, Save, Download, Undo, Redo, Grid, Moon, Sun, Play, Settings, Copy, Trash2, ZoomIn, ZoomOut, HelpCircle } from 'lucide-react';
+import HelpPopup from './components/HelpPopup';
 import Sidebar from './components/Sidebar';
 import { equipmentConfig, linkParams } from './config/equipmentsConfig';
 import NodeConfigPopup from './components/NodeConfigPopup';
@@ -27,7 +28,20 @@ function App() {
   const [lastSaved, setLastSaved] = useState(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const reactFlowWrapper = useRef(null);
+  
+  const [showHelp, setShowHelp] = useState(false);
 
+  // Ajouter ce useEffect après les autres useEffect
+  React.useEffect(() => {
+    const hasSeenHelp = localStorage.getItem('networkDesign_hasSeenHelp');
+    if (!hasSeenHelp) {
+      // Délai de 1 seconde avant d'afficher l'aide
+      const timer = setTimeout(() => {
+        setShowHelp(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
   // Sauvegarde automatique
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -330,6 +344,14 @@ function App() {
             >
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
+
+            <button
+              onClick={() => setShowHelp(true)}
+              className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+              title="Aide"
+            >
+              <HelpCircle size={18} />
+            </button>
             
             <div className="h-6 w-px bg-gray-300" />
             
@@ -526,6 +548,18 @@ function App() {
             nodes={nodes}
             edges={edges}
             closePopup={() => setShowResults(false)}
+            darkMode={darkMode}
+          />
+        )}
+
+        {showHelp && (
+          <HelpPopup
+            isOpen={showHelp}
+            onClose={() => {
+              setShowHelp(false);
+              // Marquer que l'utilisateur a vu l'aide
+              localStorage.setItem('networkDesign_hasSeenHelp', 'true');
+            }}
             darkMode={darkMode}
           />
         )}
