@@ -111,7 +111,7 @@ function Sidebar({ onAddNode, darkMode, collapsed, onToggle, screenSize }) {
 
   // Contenu de la sidebar
   const SidebarContent = () => (
-    <div className={`flex flex-col h-full ${
+    <div className={`flex flex-col ${isMobile ? 'max-h-[calc(100vh-3.5rem)]' : 'h-full'} overflow-y-auto ${
       darkMode 
         ? 'dark bg-gray-900' 
         : 'bg-gradient-to-b from-gray-50 to-gray-100'

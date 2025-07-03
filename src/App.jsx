@@ -7,6 +7,7 @@ import { equipmentConfig, linkParams } from './config/equipmentsConfig';
 import NodeConfigPopup from './components/NodeConfigPopup';
 import LinkConfigPopup from './components/LinkConfigPopup';
 import ResultsPopup from './components/ResultsPopup';
+
 import './App.css';
 
 const nodeTypes = {};
@@ -30,6 +31,8 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLegend, setShowLegend] = useState(false);
   const reactFlowWrapper = useRef(null);
+  const [toolsMenuOpen, setToolsMenuOpen] = useState(false);
+
 
   // Détection de la taille d'écran
   const [screenSize, setScreenSize] = useState('desktop');
@@ -47,7 +50,175 @@ function App() {
         setScreenSize('desktop');
         setSidebarCollapsed(false);
       }
-    };
+    };const Header = () => (
+  <div className={`fixed top-0 left-0 right-0 h-14 sm:h-16 ${darkMode ? 'dark border-gray-700' : 'bg-white border-gray-200'} border-b z-30`}>
+    <div className="flex items-center justify-between px-2 sm:px-4 h-full">
+      {/* Section gauche */}
+      <div className="flex items-center space-x-2 sm:space-x-4 flex-1 min-w-0">
+        {/* Menu burger pour mobile */}
+        {screenSize === 'mobile' && (
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+          >
+            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        )}
+
+        <input
+          type="text"
+          value={projectName}
+          onChange={(e) => setProjectName(e.target.value)}
+          className={`text-base sm:text-lg font-semibold bg-transparent border-none outline-none min-w-0 flex-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}
+          placeholder="Nom du projet"
+        />
+
+        {lastSaved && screenSize !== 'mobile' && (
+          <span className={`text-sm hidden sm:block ml-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            Sauvé {lastSaved.toLocaleTimeString()}
+          </span>
+        )}
+      </div>
+
+      {/* Section droite */}
+      <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+        {/* Légende - Desktop uniquement ou popup mobile */}
+        {screenSize === 'desktop' && (
+          <div className={`py-1 px-3 ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'} rounded-lg flex space-x-4`}>
+            <div className="text-sm font-medium">Types de liaisons</div>
+            {Object.entries(linkParams).map(([type, config]) => (
+              <div key={type} className="flex items-center space-x-2">
+                <svg width="20" height="2">
+                  <line x1="0" y1="1" x2="20" y2="1" style={config.style} />
+                </svg>
+                <span className="text-xs">{type}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Bouton légende pour mobile/tablet */}
+        {screenSize !== 'desktop' && (
+          <button
+            onClick={() => setShowLegend(!showLegend)}
+            className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+            title="Types de liaisons"
+          >
+            <Grid size={16} />
+          </button>
+        )}
+
+        {/* Stats de progression */}
+        <div className={`flex items-center space-x-2 px-2 sm:px-3 py-1 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+          <div className={`text-xs sm:text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            {screenSize === 'mobile'
+              ? `${nodeStats.configured}/${nodeStats.total}`
+              : `${nodeStats.configured}/${nodeStats.total} (${nodeStats.percentage}%)`}
+          </div>
+          <div className={`w-8 sm:w-16 h-2 rounded-full ${darkMode ? 'bg-gray-600' : 'bg-gray-300'}`}>
+            <div
+              className="h-full bg-blue-500 rounded-full transition-all duration-300"
+              style={{ width: `${nodeStats.percentage}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Contrôles principaux */}
+        <div className="flex items-center space-x-1">
+          {screenSize !== 'mobile' && (
+            <>
+              <button
+                onClick={undo}
+                disabled={historyIndex <= 0}
+                className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'} disabled:opacity-50`}
+              >
+                <Undo size={16} />
+              </button>
+              <button
+                onClick={redo}
+                disabled={historyIndex >= history.length - 1}
+                className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'} disabled:opacity-50`}
+              >
+                <Redo size={16} />
+              </button>
+              <button
+                onClick={handleLoadProject}
+                className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+                title="Charger projet"
+              >
+                <Download size={16} />
+              </button>
+              <button
+                onClick={saveProject}
+                className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+                title="Sauvegarder projet"
+              >
+                <Save size={16} />
+              </button>
+            </>
+          )}
+
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+          >
+            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+
+          <button
+            onClick={() => setShowHelp(true)}
+            className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+          >
+            <HelpCircle size={16} />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* Menu mobile déroulant */}
+    {screenSize === 'mobile' && mobileMenuOpen && (
+      <div className={`absolute top-full left-0 right-0 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t shadow-lg`}>
+        <div className="p-4 space-y-3">
+          <div className="flex space-x-2">
+            <button
+              onClick={handleLoadProject}
+              className={`flex-1 flex items-center justify-center space-x-2 p-3 rounded ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}
+            >
+              <Download size={18} />
+              <span>Charger</span>
+            </button>
+            <button
+              onClick={saveProject}
+              className={`flex-1 flex items-center justify-center space-x-2 p-3 rounded ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}
+            >
+              <Save size={18} />
+              <span>Sauver</span>
+            </button>
+          </div>
+
+          <div className="flex space-x-2">
+            <button
+              onClick={undo}
+              disabled={historyIndex <= 0}
+              className={`flex-1 flex items-center justify-center space-x-2 p-3 rounded ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'} disabled:opacity-50`}
+            >
+              <Undo size={18} />
+              <span>Annuler</span>
+            </button>
+            <button
+              onClick={redo}
+              disabled={historyIndex >= history.length - 1}
+              className={`flex-1 flex items-center justify-center space-x-2 p-3 rounded ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'} disabled:opacity-50`}
+            >
+              <Redo size={18} />
+              <span>Refaire</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+);
 
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -358,124 +529,182 @@ function App() {
     saveToHistory();
   }, [setEdges, saveToHistory]);
 
-  // Composant Header responsive
-  const Header = () => (
-    <div className={`fixed top-0 left-0 right-0 h-14 sm:h-16 ${darkMode ? 'dark border-gray-700' : 'bg-white border-gray-200'} border-b z-30`}>
-      <div className="flex items-center justify-between px-2 sm:px-4 h-full">
-        {/* Section gauche */}
-        <div className="flex items-center space-x-2 sm:space-x-4 flex-1 min-w-0">
-          {/* Menu burger pour mobile */}
-          {screenSize === 'mobile' && (
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
-            >
-              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
-          )}
-          
-          <input
-            type="text"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            className={`text-base sm:text-lg font-semibold bg-transparent border-none outline-none min-w-0 flex-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}
-            placeholder="Nom du projet"
-          />
-          
-          {lastSaved && screenSize !== 'mobile' && (
-            <span className={`text-xs hidden sm:block ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-              Sauvé {lastSaved.toLocaleTimeString()}
-            </span>
-          )}
-        </div>
-        
-        {/* Section droite */}
-        <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
-          {/* Légende - Desktop uniquement ou popup mobile */}
-          {screenSize === 'desktop' && (
-            <div className={`py-1 px-3 ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'} rounded-lg flex space-x-4`}>
-              <div className="text-sm font-medium">Types de liaisons</div>
-              {Object.entries(linkParams).map(([type, config]) => (
-                <div key={type} className="flex items-center space-x-2">
-                  <svg width="20" height="2">
-                    <line x1="0" y1="1" x2="20" y2="1" style={config.style} />
-                  </svg>
-                  <span className="text-xs">{type}</span>
-                </div>
-              ))}
-            </div>
-          )}
-          
-          {/* Bouton légende pour mobile/tablet */}
-          {screenSize !== 'desktop' && (
-            <button
-              onClick={() => setShowLegend(!showLegend)}
-              className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
-              title="Types de liaisons"
-            >
-              <Grid size={16} />
-            </button>
-          )}
-          
-          {/* Stats de progression */}
-          <div className={`flex items-center space-x-2 px-2 sm:px-3 py-1 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-            <div className={`text-xs sm:text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              {screenSize === 'mobile' ? `${nodeStats.configured}/${nodeStats.total}` : `${nodeStats.configured}/${nodeStats.total} (${nodeStats.percentage}%)`}
-            </div>
-            <div className={`w-8 sm:w-16 h-2 rounded-full ${darkMode ? 'bg-gray-600' : 'bg-gray-300'}`}>
-              <div 
-                className="h-full bg-blue-500 rounded-full transition-all duration-300"
-                style={{ width: `${nodeStats.percentage}%` }}
-              />
-            </div>
-          </div>
-          
-          {/* Contrôles principaux */}
-          <div className="flex items-center space-x-1">
-            {screenSize !== 'mobile' && (
-              <>
-                <button
-                  onClick={undo}
-                  disabled={historyIndex <= 0}
-                  className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'} disabled:opacity-50`}
-                >
-                  <Undo size={16} />
-                </button>
-                <button
-                  onClick={redo}
-                  disabled={historyIndex >= history.length - 1}
-                  className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'} disabled:opacity-50`}
-                >
-                  <Redo size={16} />
-                </button>
-              </>
-            )}
-            
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
-            >
-              {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-            
-            <button
-              onClick={() => setShowHelp(true)}
-              className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
-            >
-              <HelpCircle size={16} />
-            </button>
-          </div>
-        </div>
-      </div>
+ // Composant Header responsive
+const Header = () => (
+  <div className={`fixed top-0 left-0 right-0 h-14 sm:h-16 ${darkMode ? 'dark border-gray-700' : 'bg-white border-gray-200'} border-b z-50`}>
+    <div className="flex items-center justify-between px-2 sm:px-4 h-full">
       
-      {/* Menu mobile déroulant */}
-      {screenSize === 'mobile' && mobileMenuOpen && (
-        <div className={`absolute top-full left-0 right-0 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t shadow-lg`}>
-         
-        </div>
-      )}
+      {/* Section gauche */}
+      <div className="flex items-center space-x-2 sm:space-x-4 flex-1 min-w-0">
+        {screenSize === 'mobile' && (
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+          >
+            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        )}
+        <input
+          type="text"
+          value={projectName}
+          onChange={(e) => setProjectName(e.target.value)}
+          className={`text-base sm:text-lg font-semibold bg-transparent border-none outline-none min-w-0 flex-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}
+          placeholder="Nom du projet"
+        />
+        {lastSaved && screenSize !== 'mobile' && (
+          <span className={`text-xs hidden sm:block  ml-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            Sauvé {lastSaved.toLocaleTimeString()}
+          </span>
+        )}
+      </div>
+
+      {/* Section droite */}
+      <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0 relative">
+        
+        {/* ✅ Version desktop visible directement */}
+        {screenSize !== 'mobile' && (
+          <>
+            {/* Légende */}
+            {screenSize === 'desktop' && (
+              <div className={`py-1 px-3 ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'} rounded-lg flex space-x-4`}>
+                <div className="text-sm font-medium">Types de liaisons</div>
+                {Object.entries(linkParams).map(([type, config]) => (
+                  <div key={type} className="flex items-center space-x-2">
+                    <svg width="20" height="2">
+                      <line x1="0" y1="1" x2="20" y2="1" style={config.style} />
+                    </svg>
+                    <span className="text-xs">{type}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Progression */}
+            <div className={`flex items-center space-x-2 px-2 sm:px-3 py-1 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+              <div className={`text-xs sm:text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                {`${nodeStats.configured}/${nodeStats.total} (${nodeStats.percentage}%)`}
+              </div>
+              <div className={`w-8 sm:w-16 h-2 rounded-full ${darkMode ? 'bg-gray-600' : 'bg-gray-300'}`}>
+                <div
+                  className="h-full bg-blue-500 rounded-full transition-all duration-300"
+                  style={{ width: `${nodeStats.percentage}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Boutons de contrôle */}
+            <button
+              onClick={undo}
+              disabled={historyIndex <= 0}
+              className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'} disabled:opacity-50`}
+            >
+              <Undo size={16} />
+            </button>
+            <button
+              onClick={redo}
+              disabled={historyIndex >= history.length - 1}
+              className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'} disabled:opacity-50`}
+            >
+              <Redo size={16} />
+            </button>
+            <button
+              onClick={handleLoadProject}
+              className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+              title="Charger projet"
+            >
+              <Download size={16} />
+            </button>
+            <button
+              onClick={saveProject}
+              className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+              title="Sauvegarder projet"
+            >
+              <Save size={16} />
+            </button>
+          </>
+        )}
+
+        {/* ✅ Version mobile = menu Settings */}
+        {screenSize === 'mobile' && (
+          <div className="relative">
+            <button
+              onClick={() => setToolsMenuOpen(!toolsMenuOpen)}
+              className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+              title="Outils"
+            >
+              <Settings size={16} />
+            </button>
+
+            {toolsMenuOpen && (
+              <div className={`absolute right-0 top-full mt-2 w-64 z-50 border rounded-lg shadow-lg ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+                <div className="flex flex-col py-2 px-2 space-y-2">
+                  {/* Charger / Sauver */}
+                  <div className="flex gap-2">
+                    <button onClick={handleLoadProject} className="flex-1 p-2 rounded bg-gray-100 text-sm">
+                      <Download size={14} className="inline mr-1" /> Charger
+                    </button>
+                    <button onClick={saveProject} className="flex-1 p-2 rounded bg-gray-100 text-sm">
+                      <Save size={14} className="inline mr-1" /> Sauver
+                    </button>
+                  </div>
+
+                  {/* Undo / Redo */}
+                  <div className="flex gap-2">
+                    <button onClick={undo} disabled={historyIndex <= 0} className="flex-1 p-2 rounded bg-gray-100 text-sm disabled:opacity-50">
+                      <Undo size={14} className="inline mr-1" /> Annuler
+                    </button>
+                    <button onClick={redo} disabled={historyIndex >= history.length - 1} className="flex-1 p-2 rounded bg-gray-100 text-sm disabled:opacity-50">
+                      <Redo size={14} className="inline mr-1" /> Refaire
+                    </button>
+                  </div>
+
+                  {/* Types de liaisons */}
+                  <div className="py-1 px-2 text-xs font-medium">
+                    <div className="mb-1 text-gray-500">Types de liaisons :</div>
+                    <div className="grid grid-cols-2 gap-1">
+                      {Object.entries(linkParams).map(([type, config]) => (
+                        <div key={type} className="flex items-center space-x-1">
+                          <svg width="20" height="2">
+                            <line x1="0" y1="1" x2="20" y2="1" style={config.style} />
+                          </svg>
+                          <span className="text-[11px]">{type}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Progression */}
+                  <div className="flex items-center space-x-2 text-xs">
+                    <span>{nodeStats.configured}/{nodeStats.total}</span>
+                    <div className="w-full h-2 bg-gray-300 rounded-full">
+                      <div className="h-full bg-red-500 rounded-full" style={{ width: `${nodeStats.percentage}%` }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Dark mode + aide */}
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+        >
+          {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
+        <button
+          onClick={() => setShowHelp(true)}
+          className={`p-2 rounded hover:bg-gray-200 ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'text-gray-600'}`}
+        >
+          <HelpCircle size={16} />
+        </button>
+      </div>
     </div>
-  );
+  </div>
+);
+
+
 
   return (
     <ReactFlowProvider>
@@ -485,8 +714,10 @@ function App() {
 
         {/* Sidebar */}
         <div className={`mt-14 sm:mt-16 transition-all duration-300 ${
-          screenSize === 'mobile' ? 'absolute z-20 inset-y-0 left-0' : ''
-        } ${mobileMenuOpen && screenSize === 'mobile' ? 'translate-x-0' : screenSize === 'mobile' ? '-translate-x-full' : ''}`}>
+          screenSize === 'mobile' 
+            ? `${mobileMenuOpen ? 'block' : 'hidden'} absolute z-20 inset-y-0 left-0` 
+            : 'block'
+        }`}>
           <Sidebar 
             onAddNode={onAddNode} 
             collapsed={sidebarCollapsed && screenSize !== 'mobile'}
@@ -495,6 +726,7 @@ function App() {
             screenSize={screenSize}
           />
         </div>
+
 
         {/* Overlay pour fermer le menu mobile */}
         {mobileMenuOpen && screenSize === 'mobile' && (
@@ -567,43 +799,6 @@ function App() {
                     <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{type}</span>
                   </div>
                 ))}
-              </div>
-              <div className="p-4 space-y-3">
-                <div className="flex space-x-2">
-                  <button
-                    onClick={handleLoadProject}
-                    className={`flex-1 flex items-center justify-center space-x-2 p-3 rounded ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}
-                  >
-                    <Download size={18} />
-                    <span>Charger</span>
-                  </button>
-                  <button
-                    onClick={saveProject}
-                    className={`flex-1 flex items-center justify-center space-x-2 p-3 rounded ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}
-                  >
-                    <Save size={18} />
-                    <span>Sauver</span>
-                  </button>
-                </div>
-                  
-                <div className="flex space-x-2">
-                  <button
-                    onClick={undo}
-                    disabled={historyIndex <= 0}
-                    className={`flex-1 flex items-center justify-center space-x-2 p-3 rounded ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'} disabled:opacity-50`}
-                  >
-                    <Undo size={18} />
-                    <span>Annuler</span>
-                  </button>
-                  <button
-                    onClick={redo}
-                    disabled={historyIndex >= history.length - 1}
-                    className={`flex-1 flex items-center justify-center space-x-2 p-3 rounded ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'} disabled:opacity-50`}
-                  >
-                    <Redo size={18} />
-                    <span>Refaire</span>
-                  </button>
-                </div>
               </div>
             </div>
           )}
