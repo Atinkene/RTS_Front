@@ -610,45 +610,7 @@ export const equipmentConfig = {
       },
     ],
   },
-  'Répéteurs/Amplificateurs': {
-    equipments: [
-      { 
-        type: 'Répéteur', 
-        isActive: true, 
-        isRegenerative: true, 
-        params: [
-          'Puissance (dBm)', 
-          'Gain (dB)', 
-          'Coût unitaire (CFA)',
-          'Fréquence (MHz)', // Ajouté
-          'Sensibilité récepteur (dBm)' // Ajouté
-        ] 
-      },
-      { 
-        type: 'Amplificateur', 
-        isActive: true, 
-        isRegenerative: true, 
-        params: [
-          'Puissance (dBm)', 
-          'Gain (dB)', 
-          'Coût unitaire (CFA)',
-          'Fréquence (MHz)', // Ajouté
-          'Figure de bruit (dB)' // Ajouté
-        ] 
-      },
-      { 
-        type: 'Régénérateur', 
-        isActive: true, 
-        isRegenerative: true, 
-        params: [
-          'Puissance (dBm)', 
-          'Coût unitaire (CFA)',
-          'Fréquence (MHz)', // Ajouté
-          'Sensibilité récepteur (dBm)' // Ajouté
-        ] 
-      },
-    ],
-  },
+
 };
 
 export const linkCompatibility = {
