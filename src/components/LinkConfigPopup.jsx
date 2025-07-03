@@ -332,9 +332,9 @@ function LinkConfigPopup({ sourceNode, targetNode, saveConfig, closePopup, delet
   };
 
   const renderDynamicFields = () => {
-    if (!selectedLinkType || !linkParams[selectedLinkType]) return null;
+    if (!selectedLinkType || !linkParams[selectedLinkType]?.params) return null;
 
-    return linkParams[selectedLinkType].map((paramName) => {
+    return linkParams[selectedLinkType].params.map((paramName) => {
       if (paramName === 'Type liaison') return null;
 
       const isError = errors[paramName];
