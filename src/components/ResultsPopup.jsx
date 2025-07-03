@@ -29,7 +29,9 @@ import {
   Eye,
   EyeOff,
   Radio,
-  Grid3x3
+  Grid3x3,
+  X,
+  Menu
 } from 'lucide-react';
 
 ChartJS.register(
@@ -150,20 +152,26 @@ const CellularCluster = ({ clusterSize, frequenciesPerCell, totalFrequencies, li
   const cells = generateHexGrid(clusterSize);
 
   return (
-    <div className="bg-white p-6 border rounded-lg">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold flex items-center space-x-2">
-          <Grid3x3 className="h-5 w-5 text-blue-600" />
-          <span>Cluster Cellulaire {linkType} (N = {clusterSize})</span>
+    <div className="bg-white p-4 md:p-6 border rounded-lg">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+        <h3 className="text-base md:text-lg font-semibold flex items-center space-x-2">
+          <Grid3x3 className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
+          <span className="text-sm md:text-base">Cluster {linkType} (N = {clusterSize})</span>
         </h3>
-        <div className="text-sm text-gray-600">
+        <div className="text-xs md:text-sm text-gray-600">
           {frequenciesPerCell?.toFixed(1)} kHz/cellule
         </div>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div>
-          <svg width="300" height="300" viewBox="0 0 300 300">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-6">
+        <div className="flex justify-center">
+          <svg 
+            width="100%" 
+            height="300" 
+            viewBox="0 0 300 300"
+            className="max-w-[300px] w-full"
+            style={{ aspectRatio: '1/1' }}
+          >
             {cells.map((cell, index) => (
               <HexagonCell
                 key={index}
@@ -180,9 +188,9 @@ const CellularCluster = ({ clusterSize, frequenciesPerCell, totalFrequencies, li
         </div>
         
         <div className="space-y-4">
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h4 className="font-medium mb-2">Paramètres du Cluster</h4>
-            <div className="space-y-2 text-sm">
+          <div className="bg-gray-50 p-3 md:p-4 rounded-lg">
+            <h4 className="font-medium mb-2 text-sm md:text-base">Paramètres du Cluster</h4>
+            <div className="space-y-2 text-xs md:text-sm">
               <div className="flex justify-between">
                 <span>Taille du cluster (N):</span>
                 <span className="font-medium">{clusterSize}</span>
@@ -199,9 +207,9 @@ const CellularCluster = ({ clusterSize, frequenciesPerCell, totalFrequencies, li
           </div>
           
           {selectedCell !== null && (
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-medium mb-2">Cellule {cells[selectedCell]?.freq}</h4>
-              <div className="space-y-2 text-sm">
+            <div className="bg-blue-50 p-3 md:p-4 rounded-lg">
+              <h4 className="font-medium mb-2 text-sm md:text-base">Cellule {cells[selectedCell]?.freq}</h4>
+              <div className="space-y-2 text-xs md:text-sm">
                 <div className="flex justify-between">
                   <span>Fréquence assignée:</span>
                   <span className="font-medium">{cells[selectedCell]?.freq}</span>
@@ -214,9 +222,9 @@ const CellularCluster = ({ clusterSize, frequenciesPerCell, totalFrequencies, li
             </div>
           )}
           
-          <div className="bg-green-50 p-4 rounded-lg">
-            <h4 className="font-medium mb-2">Réutilisation des Fréquences</h4>
-            <p className="text-sm text-gray-700">
+          <div className="bg-green-50 p-3 md:p-4 rounded-lg">
+            <h4 className="font-medium mb-2 text-sm md:text-base">Réutilisation des Fréquences</h4>
+            <p className="text-xs md:text-sm text-gray-700">
               Chaque couleur représente un groupe de fréquences différent. 
               Les cellules de même couleur utilisent les mêmes fréquences et 
               sont suffisamment éloignées pour éviter les interférences.
@@ -234,20 +242,26 @@ const SingleCellView = ({ result }) => {
   const reuseDistance = result.reuseDistance || 3;
   
   return (
-    <div className="bg-white p-6 border rounded-lg">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold flex items-center space-x-2">
-          <Radio className="h-5 w-5 text-green-600" />
-          <span>Cellule - {result.edgeId} ({result.linkType})</span>
+    <div className="bg-white p-4 md:p-6 border rounded-lg">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+        <h3 className="text-base md:text-lg font-semibold flex items-center space-x-2">
+          <Radio className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
+          <span className="text-sm md:text-base">Cellule - {result.edgeId} ({result.linkType})</span>
         </h3>
-        <div className="text-sm text-gray-600">
+        <div className="text-xs md:text-sm text-gray-600">
           Type: {result.linkType}
         </div>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div>
-          <svg width="300" height="300" viewBox="0 0 300 300">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-6">
+        <div className="flex justify-center">
+          <svg 
+            width="100%" 
+            height="300" 
+            viewBox="0 0 300 300"
+            className="max-w-[300px] w-full"
+            style={{ aspectRatio: '1/1' }}
+          >
             <circle
               cx="150"
               cy="150"
@@ -289,9 +303,9 @@ const SingleCellView = ({ result }) => {
         </div>
         
         <div className="space-y-4">
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h4 className="font-medium mb-2">Caractéristiques</h4>
-            <div className="space-y-2 text-sm">
+          <div className="bg-gray-50 p-3 md:p-4 rounded-lg">
+            <h4 className="font-medium mb-2 text-sm md:text-base">Caractéristiques</h4>
+            <div className="space-y-2 text-xs md:text-sm">
               <div className="flex justify-between">
                 <span>Rayon de couverture:</span>
                 <span className="font-medium">{cellRadius.toFixed(2)} km</span>
@@ -312,15 +326,15 @@ const SingleCellView = ({ result }) => {
           </div>
           
           {result.cellularCapacity && (
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-medium mb-2">Capacité Cellulaire</h4>
-              <div className="space-y-2 text-sm">
+            <div className="bg-blue-50 p-3 md:p-4 rounded-lg">
+              <h4 className="font-medium mb-2 text-sm md:text-base">Capacité Cellulaire</h4>
+              <div className="space-y-2 text-xs md:text-sm">
                 <div className="flex justify-between">
                   <span>Capacité totale:</span>
                   <span className="font-medium">{result.cellularCapacity.toFixed(1)} Mbps</span>
                 </div>
                 
-                {result.frequenciesPerCell+1 && (
+                {result.frequenciesPerCell && (
                   <div className="flex justify-between">
                     <span>Fréquences/cellule:</span>
                     <span className="font-medium">{result.frequenciesPerCell.toFixed(1)} kHz</span>
@@ -352,7 +366,7 @@ function ResultsPopup({ nodes, edges, closePopup }) {
     minCapacity: '',
     maxLatency: ''
   });
-
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     calculateDimensioning();
@@ -367,8 +381,7 @@ function ResultsPopup({ nodes, edges, closePopup }) {
       setLoading(false);
       return;
     }
-    console.log(nodes);
-    console.log(edges);
+    
     try {
       const response = await fetch('https://rts-back-0adn.onrender.com/api/calculate', {
         method: 'POST',
@@ -381,7 +394,6 @@ function ResultsPopup({ nodes, edges, closePopup }) {
       }
       
       const data = await response.json();
-      console.log(data);
       
       const parsedResults = (data.results || []).map((result) => ({
         edgeId: result.edgeId || 'N/A',
@@ -430,12 +442,9 @@ function ResultsPopup({ nodes, edges, closePopup }) {
     return suggestions;
   };
 
-  
-
   const toggleSection = (section) => {
     setExpandedSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
+ sixth: !prev[section]
     }));
   };
 
@@ -533,54 +542,56 @@ function ResultsPopup({ nodes, edges, closePopup }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-2xl w-full h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="flex items-center space-x-3">
-            <BarChart3 className="h-6 w-6 text-blue-600" />
-            <h2 className="text-2xl font-bold text-gray-800">Résultats du Dimensionnement</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4">
+      <div className="bg-white rounded-lg shadow-2xl w-full max-w-7xl h-[95vh] md:h-[90vh] flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 md:p-6 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
+          <div className="flex items-center space-x-2 md:space-x-3">
+            <BarChart3 className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
+            <h2 className="text-lg md:text-2xl font-bold text-gray-800">Résultats du Dimensionnement</h2>
           </div>
           <div className="flex items-center space-x-2">
             <button
               onClick={calculateDimensioning}
               disabled={loading}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              className="flex items-center space-x-1 md:space-x-2 px-2 md:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors text-sm md:text-base"
             >
               {loading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <RefreshCw className="h-4 w-4" />
               )}
-              <span>{loading ? 'Calcul...' : 'Recalculer'}</span>
+              <span className="hidden sm:inline">{loading ? 'Calcul...' : 'Recalculer'}</span>
             </button>
             <button
               onClick={closePopup}
-              className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+              className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
             >
-              Fermer
+              <X className="h-5 w-5" />
             </button>
           </div>
         </div>
 
-        <div className="px-6 py-3 bg-gray-50 border-b">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-6">
+        {/* Stats Bar */}
+        <div className="px-4 md:px-6 py-3 bg-gray-50 border-b">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-4 md:gap-6">
               <div className="flex items-center space-x-2">
                 <DollarSign className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-medium">
+                <span className="text-xs md:text-sm font-medium">
                   Coût total: <span className="text-green-600">{totalCost.toFixed(2)} CFA</span>
                 </span>
               </div>
               <div className="flex items-center space-x-2">
                 <Wifi className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-medium">
+                <span className="text-xs md:text-sm font-medium">
                   Liaisons: <span className="text-blue-600">{results.length}</span>
                 </span>
               </div>
               {cellularResults.length > 0 && (
                 <div className="flex items-center space-x-2">
                   <Radio className="h-4 w-4 text-purple-600" />
-                  <span className="text-sm font-medium">
+                  <span className="text-xs md:text-sm font-medium">
                     Cellulaires: <span className="text-purple-600">{cellularResults.length}</span>
                   </span>
                 </div>
@@ -588,7 +599,7 @@ function ResultsPopup({ nodes, edges, closePopup }) {
               {suggestions.length > 0 && (
                 <div className="flex items-center space-x-2">
                   <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                  <span className="text-sm font-medium">
+                  <span className="text-xs md:text-sm font-medium">
                     Alertes: <span className="text-yellow-600">{suggestions.length}</span>
                   </span>
                 </div>
@@ -598,7 +609,7 @@ function ResultsPopup({ nodes, edges, closePopup }) {
             {results.length > 0 && (
               <button
                 onClick={exportToCSV}
-                className="flex items-center space-x-2 px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors"
+                className="flex items-center space-x-1 md:space-x-2 px-3 py-1 bg-green-600 text-white rounded text-xs md:text-sm hover:bg-green-700 transition-colors"
               >
                 <Download className="h-4 w-4" />
                 <span>Exporter CSV</span>
@@ -633,8 +644,9 @@ function ResultsPopup({ nodes, edges, closePopup }) {
             </div>
           ) : (
             <div className="h-full overflow-y-auto">
+              {/* Tabs */}
               <div className="border-b bg-white sticky top-0 z-10">
-                <div className="flex space-x-1 px-6">
+                <div className="flex overflow-x-auto px-4 md:px-6">
                   {[
                     { id: 'results', label: 'Résultats', icon: BarChart3 },
                     { id: 'cellular', label: 'Cellulaire', icon: Radio },
@@ -645,7 +657,7 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                       <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                        className={`flex items-center space-x-2 px-3 md:px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                           activeTab === tab.id
                             ? 'border-blue-500 text-blue-600 bg-blue-50'
                             : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
@@ -659,95 +671,117 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                 </div>
               </div>
 
-              <div className="p-6">
+              <div className="p-4 md:p-6">
                 {activeTab === 'results' && (
-                  <div className="space-y-6">
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="flex flex-wrap items-center gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Type de liaison
-                          </label>
-                          <select
-                            value={filters.linkType}
-                            onChange={(e) => setFilters(prev => ({ ...prev, linkType: e.target.value }))}
-                            className="px-3 py-2 border rounded-md text-sm"
-                          >
-                            <option value="all">Tous</option>
-                            <option value="Hertzien">Hertzien</option>
-                            <option value="Optique">Optique</option>
-                            <option value="RJ45">RJ45</option>
-                            <option value="GSM">GSM</option>
-                            <option value="UMTS">UMTS</option>
-                            <option value="4G">4G</option>
-                            <option value="5G">5G</option>
-                          </select>
-                        </div>
-                        
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Capacité min (Mbps)
-                          </label>
-                          <input
-                            type="number"
-                            value={filters.minCapacity}
-                            onChange={(e) => setFilters(prev => ({ ...prev, minCapacity: e.target.value }))}
-                            placeholder="Ex: 10"
-                            className="px-3 py-2 border rounded-md text-sm w-24"
-                          />
-                        </div>
-                        
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Latence max (ms)
-                          </label>
-                          <input
-                            type="number"
-                            value={filters.maxLatency}
-                            onChange={(e) => setFilters(prev => ({ ...prev, maxLatency: e.target.value }))}
-                            placeholder="Ex: 100"
-                            className="px-3 py-2 border rounded-md text-sm w-24"
-                          />
-                        </div>
-                        
-                        <div className="flex items-end">
-                          <button
-                            onClick={() => setFilters({ linkType: 'all', minCapacity: '', maxLatency: '' })}
-                            className="px-3 py-2 bg-gray-200 text-gray-700 rounded-md text-sm hover:bg-gray-300 transition-colors"
-                          >
-                            Réinitialiser
-                          </button>
+                  <div className="space-y-4 md:space-y-6">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-base md:text-lg font-semibold">Filtres</h3>
+                      <button
+                        onClick={() => setShowFilters(!showFilters)}
+                        className="flex items-center space-x-1 md:space-x-2 text-sm text-blue-600 hover:text-blue-800"
+                      >
+                        {showFilters ? (
+                          <>
+                            <EyeOff className="h-4 w-4" />
+                            <span className="hidden sm:inline">Masquer les filtres</span>
+                          </>
+                        ) : (
+                          <>
+                            <Eye className="h-4 w-4" />
+                            <span className="hidden sm:inline">Afficher les filtres</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    {showFilters && (
+                      <div className="bg-gray-50 p-3 md:p-4 rounded-lg">
+                        <div className="flex flex-wrap items-center gap-3 md:gap-4">
+                          <div className="w-full sm:w-auto">
+                            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">
+                              Type de liaison
+                            </label>
+                            <select
+                              value={filters.linkType}
+                              onChange={(e) => setFilters(prev => ({ ...prev, linkType: e.target.value }))}
+                              className="px-2 md:px-3 py-1 md:py-2 border rounded-md text-xs md:text-sm w-full sm:w-32"
+                            >
+                              <option value="all">Tous</option>
+                              <option value="Hertzien">Hertzien</option>
+                              <option value="Optique">Optique</option>
+                              <option value="RJ45">RJ45</option>
+                              <option value="GSM">GSM</option>
+                              <option value="UMTS">UMTS</option>
+                              <option value="4G">4G</option>
+                              <option value="5G">5G</option>
+                            </select>
+                          </div>
+                          
+                          <div className="w-full sm:w-auto">
+                            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">
+                              Capacité min (Mbps)
+                            </label>
+                            <input
+                              type="number"
+                              value={filters.minCapacity}
+                              onChange={(e) => setFilters(prev => ({ ...prev, minCapacity: e.target.value }))}
+                              placeholder="Ex: 10"
+                              className="px-2 md:px-3 py-1 md:py-2 border rounded-md text-xs md:text-sm w-full sm:w-24"
+                            />
+                          </div>
+                          
+                          <div className="w-full sm:w-auto">
+                            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">
+                              Latence max (ms)
+                            </label>
+                            <input
+                              type="number"
+                              value={filters.maxLatency}
+                              onChange={(e) => setFilters(prev => ({ ...prev, maxLatency: e.target.value }))}
+                              placeholder="Ex: 100"
+                              className="px-2 md:px-3 py-1 md:py-2 border rounded-md text-xs md:text-sm w-full sm:w-24"
+                            />
+                          </div>
+                          
+                          <div className="w-full sm:w-auto flex items-end">
+                            <button
+                              onClick={() => setFilters({ linkType: 'all', minCapacity: '', maxLatency: '' })}
+                              className="px-2 md:px-3 py-1 md:py-2 bg-gray-200 text-gray-700 rounded-md text-xs md:text-sm hover:bg-gray-300 transition-colors w-full sm:w-auto"
+                            >
+                              Réinitialiser
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
 
                     <div className="bg-white border rounded-lg overflow-hidden">
                       <div className="overflow-x-auto">
                         <table className="w-full">
                           <thead className="bg-gray-50">
                             <tr>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Liaison
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Type
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Puissance (dBm)
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Perte (dB)
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 SNR (dB)
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Capacité (Mbps)
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Latence (ms)
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 État
                               </th>
                             </tr>
@@ -755,10 +789,10 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                           <tbody className="bg-white divide-y divide-gray-200">
                             {filteredResults.map((result, index) => (
                               <tr key={result.edgeId} className="hover:bg-gray-50">
-                                <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">
                                   {result.edgeId}
                                 </td>
-                                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-500">
                                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                                     result.linkType === 'Optique' ? 'bg-blue-100 text-blue-800' :
                                     result.linkType === 'Hertzien' ? 'bg-green-100 text-green-800' :
@@ -769,32 +803,32 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                                     {result.linkType}
                                   </span>
                                 </td>
-                                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">
                                   <span className={getStatusColor(result.receivedPower, { good: -30, warning: -50 })}>
                                     {result.receivedPower.toFixed(2)}
                                   </span>
                                 </td>
-                                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">
                                   <span className={getStatusColor(-result.loss, { good: -20, warning: -40 })}>
                                     {result.loss.toFixed(2)}
                                   </span>
                                 </td>
-                                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">
                                   <span className={getStatusColor(result.snr_dB, { good: 20, warning: 10 })}>
                                     {result.snr_dB.toFixed(2)}
                                   </span>
                                 </td>
-                                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">
                                   <span className={getStatusColor(result.capacity, { good: 50, warning: 20 })}>
                                     {result.capacity.toFixed(2)}
                                   </span>
                                 </td>
-                                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">
                                   <span className={getStatusColor(-result.latency, { good: -50, warning: -100 })}>
                                     {result.latency.toFixed(2)}
                                   </span>
                                 </td>
-                                <td className="px-4 py-4 whitespace-nowrap text-sm">
+                                <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm">
                                   {result.snr_dB >= 20 && result.capacity >= 50 ? (
                                     <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                       <CheckCircle className="h-3 w-3 mr-1" />
@@ -820,9 +854,9 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                     </div>
 
                     {suggestions.length > 0 && (
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                        <h3 className="text-lg font-semibold text-yellow-800 mb-3 flex items-center">
-                          <AlertTriangle className="h-5 w-5 mr-2" />
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 md:p-4">
+                        <h3 className="text-base md:text-lg font-semibold text-yellow-800 mb-3 flex items-center">
+                          <AlertTriangle className="h-4 w-4 md:h-5 md:w-5 mr-2" />
                           Suggestions d'amélioration
                         </h3>
                         <div className="space-y-2">
@@ -833,7 +867,7 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                                 suggestion.type === 'warning' ? 'bg-yellow-500' :
                                 'bg-blue-500'
                               }`}></div>
-                              <p className="text-sm text-gray-700">{suggestion.suggestion}</p>
+                              <p className="text-xs md:text-sm text-gray-700">{suggestion.suggestion}</p>
                             </div>
                           ))}
                         </div>
@@ -843,52 +877,52 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                 )}
 
                 {activeTab === 'cellular' && (
-                  <div className="space-y-6">
+                  <div className="space-y-4 md:space-y-6">
                     {cellularResults.length === 0 ? (
                       <div className="text-center py-12">
                         <Radio className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                         <p className="text-gray-600">Aucune liaison cellulaire détectée</p>
-                        <p className="text-gray-500 text-sm">
+                        <p className="text-gray-500 text-xs md:text-sm">
                           Les liaisons GSM, UMTS, 4G et 5G apparaîtront ici
                         </p>
                       </div>
                     ) : (
                       <>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                          <div className="bg-white p-6 border rounded-lg">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                          <div className="bg-white p-4 md:p-6 border rounded-lg">
                             <div className="flex items-center justify-between">
                               <div>
-                                <p className="text-sm font-medium text-gray-600">Liaisons Cellulaires</p>
-                                <p className="text-2xl font-bold text-gray-900">{cellularResults.length}</p>
+                                <p className="text-xs md:text-sm font-medium text-gray-600">Liaisons Cellulaires</p>
+                                <p className="text-lg md:text-2xl font-bold text-gray-900">{cellularResults.length}</p>
                               </div>
-                              <Radio className="h-8 w-8 text-purple-600" />
+                              <Radio className="h-6 md:h-8 w-6 md:w-8 text-purple-600" />
                             </div>
                           </div>
                           
-                          <div className="bg-white p-6 border rounded-lg">
+                          <div className="bg-white p-4 md:p-6 border rounded-lg">
                             <div className="flex items-center justify-between">
                               <div>
-                                <p className="text-sm font-medium text-gray-600">Capacité Totale</p>
-                                <p className="text-2xl font-bold text-gray-900">
+                                <p className="text-xs md:text-sm font-medium text-gray-600">Capacité Totale</p>
+                                <p className="text-lg md:text-2xl font-bold text-gray-900">
                                   {cellularResults.reduce((sum, r) => sum + r.cellularCapacity, 0).toFixed(1)} Mbps
                                 </p>
                               </div>
-                              <BarChart3 className="h-8 w-8 text-blue-600" />
+                              <BarChart3 className="h-6 md:h-8 w-6 md:w-8 text-blue-600" />
                             </div>
                           </div>
                           
-                          <div className="bg-white p-6 border rounded-lg">
+                          <div className="bg-white p-4 md:p-6 border rounded-lg">
                             <div className="flex items-center justify-between">
                               <div>
-                                <p className="text-sm font-medium text-gray-600">Distance Réutilisation Moy.</p>
-                                <p className="text-2xl font-bold text-gray-900">
+                                <p className="text-xs md:text-sm font-medium text-gray-600">Distance Réutilisation Moy.</p>
+                                <p className="text-lg md:text-2xl font-bold text-gray-900">
                                   {cellularResults.length > 0 ? 
                                     (cellularResults.reduce((sum, r) => sum + (r.reuseDistance || 0), 0) / cellularResults.length).toFixed(1) : 
                                     '0'
                                   } km
                                 </p>
                               </div>
-                              <Grid3x3 className="h-8 w-8 text-green-600" />
+                              <Grid3x3 className="h-6 md:h-8 w-6 md:w-8 text-green-600" />
                             </div>
                           </div>
                         </div>
@@ -901,7 +935,7 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                           const totalFrequencies = avgFrequenciesPerCell * clusterSizes[tech];
                           
                           return (
-                            <div key={tech} className="space-y-6">
+                            <div key={tech} className="space-y-4 md:space-y-6">
                               <CellularCluster 
                                 clusterSize={clusterSizes[tech]}
                                 frequenciesPerCell={avgFrequenciesPerCell}
@@ -912,18 +946,18 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                           );
                         })}
 
-                        <div className="space-y-6">
-                          <h3 className="text-lg font-semibold text-gray-800">Cellules Individuelles</h3>
-                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="space-y-4 md:space-y-6">
+                          <h3 className="text-base md:text-lg font-semibold text-gray-800">Cellules Individuelles</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             {cellularResults.map((result, index) => (
                               <SingleCellView key={result.edgeId} result={result} />
                             ))}
                           </div>
                         </div>
 
-                        <div className="bg-white p-6 border rounded-lg">
-                          <h3 className="text-lg font-semibold mb-4 flex items-center">
-                            <BarChart3 className="h-5 w-5 text-blue-600 mr-2" />
+                        <div className="bg-white p-4 md:p-6 border rounded-lg">
+                          <h3 className="text-base md:text-lg font-semibold mb-4 flex items-center">
+                            <BarChart3 className="h-4 w-4 md:h-5 md:w-5 text-blue-600 mr-2" />
                             Comparaison des Technologies Cellulaires
                           </h3>
                           
@@ -931,19 +965,19 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                             <table className="w-full">
                               <thead className="bg-gray-50">
                                 <tr>
-                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                  <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">
                                     Technologie
                                   </th>
-                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                  <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">
                                     Capacité (Mbps)
                                   </th>
-                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                  <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">
                                     Couverture (km)
                                   </th>
-                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                  <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">
                                     Latence (ms)
                                   </th>
-                                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                  <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">
                                     SNR (dB)
                                   </th>
                                 </tr>
@@ -960,21 +994,21 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                                   
                                   return (
                                     <tr key={tech}>
-                                      <td className="px-4 py-4 whitespace-nowrap">
+                                      <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap">
                                         <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
                                           {tech}
                                         </span>
                                       </td>
-                                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">
                                         {avgCapacity.toFixed(1)}
                                       </td>
-                                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">
                                         {avgCoverage.toFixed(1)}
                                       </td>
-                                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">
                                         {avgLatency.toFixed(1)}
                                       </td>
-                                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      <td className="px-2 md:px-4 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">
                                         {avgSNR.toFixed(1)}
                                       </td>
                                     </tr>
@@ -990,11 +1024,11 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                 )}
 
                 {activeTab === 'charts' && (
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <div className="bg-white p-6 border rounded-lg">
-                        <h3 className="text-lg font-semibold mb-4 flex items-center">
-                          <Zap className="h-5 w-5 text-yellow-600 mr-2" />
+                  <div className="space-y-4 md:space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                      <div className="bg-white p-4 md:p-6 border rounded-lg">
+                        <h3 className="text-base md:text-lg font-semibold mb-4 flex items-center">
+                          <Zap className="h-4 w-4 md:h-5 md:w-5 text-yellow-600 mr-2" />
                           Puissance et Pertes
                         </h3>
                         <div className="h-64">
@@ -1018,9 +1052,9 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                         </div>
                       </div>
 
-                      <div className="bg-white p-6 border rounded-lg">
-                        <h3 className="text-lg font-semibold mb-4 flex items-center">
-                          <BarChart3 className="h-5 w-5 text-blue-600 mr-2" />
+                      <div className="bg-white p-4 md:p-6 border rounded-lg">
+                        <h3 className="text-base md:text-lg font-semibold mb-4 flex items-center">
+                          <BarChart3 className="h-4 w-4 md:h-5 md:w-5 text-blue-600 mr-2" />
                           Capacité par Liaison
                         </h3>
                         <div className="h-64">
@@ -1044,9 +1078,9 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                         </div>
                       </div>
 
-                      <div className="bg-white p-6 border rounded-lg">
-                        <h3 className="text-lg font-semibold mb-4 flex items-center">
-                          <Wifi className="h-5 w-5 text-green-600 mr-2" />
+                      <div className="bg-white p-4 md:p-6 border rounded-lg">
+                        <h3 className="text-base md:text-lg font-semibold mb-4 flex items-center">
+                          <Wifi className="h-4 w-4 md:h-5 md:w-5 text-green-600 mr-2" />
                           SNR vs Capacité
                         </h3>
                         <div className="h-64">
@@ -1076,9 +1110,9 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                         </div>
                       </div>
 
-                      <div className="bg-white p-6 border rounded-lg">
-                        <h3 className="text-lg font-semibold mb-4 flex items-center">
-                          <Clock className="h-5 w-5 text-orange-600 mr-2" />
+                      <div className="bg-white p-4 md:p-6 border rounded-lg">
+                        <h3 className="text-base md:text-lg font-semibold mb-4 flex items-center">
+                          <Clock className="h-4 w-4 md:h-5 md:w-5 text-orange-600 mr-2" />
                           Latence par Type
                         </h3>
                         <div className="h-64">
@@ -1116,7 +1150,6 @@ function ResultsPopup({ nodes, edges, closePopup }) {
                     </div>
                   </div>
                 )}
-
               </div>
             </div>
           )}
