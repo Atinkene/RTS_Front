@@ -1,136 +1,96 @@
 export const linkParams = {
-  'Optique': {
-    params: [
-      'Atténuation (dB/km)', 
-      'Perte connecteurs (dB)', 
-      'Perte épissures (dB)', 
-      'Sensibilité récepteur (dBm)', 
-      'Portée (km)', 
-      'Rapidité modulation (bauds)', 
-      'Valence', 
-      'Longueur d\'onde (nm)', 
-      'Ouverture numérique'
-    ],
-    style: { 
-      stroke: '#ef4444', // Rouge vif
-      strokeWidth: 4,
-      strokeDasharray: '2,2', // Pointillés serrés
-    }
-  },
-  'Hertzien': {
-    params: [
-      'Longueur guide Tx (m)', 
-      'Longueur guide Rx (m)', 
-      'Perte guide (dB/100m)', 
-      'Perte branchements (dB)', 
-      'Perte câble (dB)', 
-      'Portée (km)', 
-      'Rapidité modulation (bauds)', 
-      'Valence', 
-      'Polarisation'
-    ],
-    style: { 
-      stroke: '#8b5cf6', // Violet vif
-      strokeWidth: 3,
-      strokeDasharray: '12,4,2,4', // Motif morse
-    }
-  },
-  'GSM': {
-    params: [
-      'Total fréquences', 
-      'Bande passante (kHz)', 
-      'Rayon cellule (km)', 
-      'Surface totale (km²)', 
-      'Perte câble (dB)', 
-      'i', 
-      'j', 
-      'Rapidité modulation (bauds)', 
-      'Valence'
-    ],
-    style: { 
-      stroke: '#22c55e', // Vert vif
-      strokeWidth: 3,
-      strokeDasharray: '0', // Ligne continue
-    }
-  },
-  'UMTS': {
-    params: [
-      'Bande passante (MHz)', 
-      'Rayon cellule (km)', 
-      'Surface totale (km²)', 
-      'Perte câble (dB)', 
-      'Rapidité modulation (bauds)', 
-      'Valence', 
-      'i', 
-      'j', 
-      'Facteur d\'étalement (SF)'
-    ],
-    style: { 
-      stroke: '#3b82f6', // Bleu vif
-      strokeWidth: 3,
-      strokeDasharray: '8,4', // Tirets longs
-    }
-  },
-  '4G': {
-    params: [
-      'Bande passante (MHz)', 
-      'Couches MIMO', 
-      'Rayon cellule (km)', 
-      'Surface totale (km²)', 
-      'Perte câble (dB)', 
-      'Rapidité modulation (bauds)', 
-      'Valence', 
-      'i', 
-      'j', 
-      'Modulation (QPSK/16QAM/64QAM/256QAM)', 
-      'Code rate'
-    ],
-    style: { 
-      stroke: '#f59e0b', // Orange vif
-      strokeWidth: 4,
-      strokeDasharray: '0',
-    }
-  },
-  '5G': {
-    params: [
-      'FrequencyBand', 
-      'Fréquence (MHz)', 
-      'Bande passante (MHz)', 
-      'Couches MIMO', 
-      'Rayon cellule (km)', 
-      'Surface totale (km²)', 
-      'Perte câble (dB)', 
-      'Rapidité modulation (bauds)', 
-      'Valence', 
-      'i', 
-      'j', 
-      'Numerology (μ)', 
-      'Modulation (QPSK/16QAM/64QAM/256QAM/1024QAM)', 
-      'Beamforming gain (dB)'
-    ],
-    style: { 
-      stroke: '#ec4899', // Rose vif
-      strokeWidth: 4,
-      strokeDasharray: '6,2,2,2', // Motif complexe
-    }
-  },
-  'RJ45': {
-    params: [
-      'Catégorie', 
-      'Portée (km)', 
-      'Rapidité modulation (bauds)', 
-      'Valence', 
-      'Impédance caractéristique (Ω)', 
-      'Atténuation (dB/100m)', 
-      'Fréquence maximale (MHz)', 
-      'Débit nominal (Mbps)'
-    ],
-    style: { 
-      stroke: '#06b6d4', // Cyan vif
-      strokeWidth: 2,
-      strokeDasharray: '4,4', // Pointillés réguliers
-    }
-  },
+  'Optique': [
+    'Atténuation (dB/km)', 
+    'Perte connecteurs (dB)', 
+    'Perte épissures (dB)', 
+    'Sensibilité récepteur (dBm)', 
+    'Portée (km)', 
+    'Rapidité modulation (bauds)', 
+    'Valence', 
+    'Longueur d\'onde (nm)', 
+    'Ouverture numérique',
+    'Dispersion chromatique (ps/nm/km)',
+    'Longueur (km)',
+    'Débit (Gbps)',
+    'Type fibre (SM/MM)', // Ajouté
+  ],
+  'Hertzien': [
+    'Longueur guide Tx (m)', 
+    'Longueur guide Rx (m)', 
+    'Perte guide (dB/100m)', 
+    'Perte branchements (dB)', 
+    'Perte câble (dB)', 
+    'Portée (km)', 
+    'Rapidité modulation (bauds)', 
+    'Valence', 
+    'Polarisation'
+    // SUPPRIMÉ: 'Gain antenne émettrice (dBi)', 'Gain antenne réceptrice (dBi)'
+  ],
+  'GSM': [
+    'Total fréquences', 
+    'Bande passante (kHz)', 
+    'Rayon cellule (km)', 
+    'Surface totale (km²)', 
+    'Perte câble (dB)', 
+    'i', 
+    'j', 
+    'Rapidité modulation (bauds)', 
+    'Valence'
+    // SUPPRIMÉ: 'Gain antenne émettrice (dBi)', 'Gain antenne réceptrice (dBi)'
+  ],
+  'UMTS': [
+    'Bande passante (MHz)', 
+    'Rayon cellule (km)', 
+    'Surface totale (km²)', 
+    'Perte câble (dB)', 
+    'Rapidité modulation (bauds)', 
+    'Valence', 
+    'i', 
+    'j', 
+    'Facteur d\'étalement (SF)'
+    // SUPPRIMÉ: 'Gain antenne émettrice (dBi)', 'Gain antenne réceptrice (dBi)'
+  ],
+  '4G': [
+    'Bande passante (MHz)', 
+    'Couches MIMO', 
+    'Rayon cellule (km)', 
+    'Surface totale (km²)', 
+    'Perte câble (dB)', 
+    'Rapidité modulation (bauds)', 
+    'Valence', 
+    'i', 
+    'j', 
+    'Modulation (QPSK/16QAM/64QAM/256QAM)', 
+    'Code rate'
+    // SUPPRIMÉ: 'Gain antenne émettrice (dBi)', 'Gain antenne réceptrice (dBi)'
+  ],
+  '5G': [
+    'FrequencyBand', 
+    'Fréquence (MHz)', 
+    'Bande passante (MHz)', 
+    'Couches MIMO', 
+    'Rayon cellule (km)', 
+    'Surface totale (km²)', 
+    'Perte câble (dB)', 
+    'Rapidité modulation (bauds)', 
+    'Valence', 
+    'i', 
+    'j', 
+    'Numerology (μ)', 
+    'Modulation (QPSK/16QAM/64QAM/256QAM/1024QAM)', 
+    'Beamforming gain (dB)'
+    // SUPPRIMÉ: 'Gain antenne émettrice (dBi)', 'Gain antenne réceptrice (dBi)'
+  ],
+  'RJ45': [
+    'Catégorie', 
+    'Portée (km)', 
+    'Rapidité modulation (bauds)', 
+    'Valence', 
+    'Impédance caractéristique (Ω)', 
+    'Atténuation (dB/100m)', 
+    'Fréquence maximale (MHz)', 
+    'Débit nominal (Mbps)'
+  ],
 };
 
 // Mise à jour des équipements avec des paramètres plus cohérents
@@ -490,20 +450,6 @@ export const equipmentConfig = {
   'Liaisons Optiques': {
     equipments: [
       { 
-        type: 'Fibre Optique', 
-        isPassive: true, 
-        params: [
-          'Longueur (km)', 
-          'Débit (Gbps)', 
-          'Atténuation (dB/km)', 
-          'Coût unitaire (CFA)', 
-          'Longueur d\'onde (nm)', 
-          'Ouverture numérique',
-          'Type fibre (SM/MM)', // Ajouté
-          'Dispersion chromatique (ps/nm/km)' // Ajouté
-        ] 
-      },
-      { 
         type: 'Multiplexeur CWDM/DWDM', 
         isPassive: true, 
         params: ['Canaux', 'Coût unitaire (CFA)', 'Espacement canal (nm)'] // Ajouté espacement
@@ -610,7 +556,45 @@ export const equipmentConfig = {
       },
     ],
   },
-
+  'Répéteurs/Amplificateurs': {
+    equipments: [
+      { 
+        type: 'Répéteur', 
+        isActive: true, 
+        isRegenerative: true, 
+        params: [
+          'Puissance (dBm)', 
+          'Gain (dB)', 
+          'Coût unitaire (CFA)',
+          'Fréquence (MHz)', // Ajouté
+          'Sensibilité récepteur (dBm)' // Ajouté
+        ] 
+      },
+      { 
+        type: 'Amplificateur', 
+        isActive: true, 
+        isRegenerative: true, 
+        params: [
+          'Puissance (dBm)', 
+          'Gain (dB)', 
+          'Coût unitaire (CFA)',
+          'Fréquence (MHz)', // Ajouté
+          'Figure de bruit (dB)' // Ajouté
+        ] 
+      },
+      { 
+        type: 'Régénérateur', 
+        isActive: true, 
+        isRegenerative: true, 
+        params: [
+          'Puissance (dBm)', 
+          'Coût unitaire (CFA)',
+          'Fréquence (MHz)', // Ajouté
+          'Sensibilité récepteur (dBm)' // Ajouté
+        ] 
+      },
+    ],
+  },
 };
 
 export const linkCompatibility = {
