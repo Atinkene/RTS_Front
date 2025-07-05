@@ -334,8 +334,9 @@ function LinkConfigPopup({ sourceNode, targetNode, saveConfig, closePopup, delet
 
     if (e.target.name === 'Type liaison') {
       setSelectedLinkType(e.target.value);
-      setParams({ 'Type liaison': e.target.value });
+      setParams(prev => ({ ...prev, 'Type liaison': e.target.value }));
     }
+
   };
 
   const applyPreset = (presetName) => {
@@ -343,8 +344,15 @@ function LinkConfigPopup({ sourceNode, targetNode, saveConfig, closePopup, delet
     if (compatibleLinkTypes.includes(preset['Type liaison'])) {
       setParams({ ...preset });
       setSelectedLinkType(preset['Type liaison']);
+    
+      // ➕ Ajout : forcer revalidation juste après
+      setTimeout(() => {
+        validateParams(preset);
+        checkFeasibility();
+      }, 0);
     }
   };
+
 
   const getCompatiblePresets = () => {
     return Object.entries(presets).filter(([name, preset]) => 
