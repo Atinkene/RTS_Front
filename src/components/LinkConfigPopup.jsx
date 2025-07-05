@@ -4,46 +4,98 @@ import { getCompatibleLinkTypes, linkParams } from '../config/equipmentsConfig';
 
 // Presets enrichis basés sur les équipements
 const presets = {
-  'Fibre Optique': { 
-    'Type liaison': 'Optique', 
-    'Portée (km)': '50',
+  'Fibre Optique': {
+    'Type liaison': 'Optique',
+    'Portée (km)': '10',
     'Atténuation (dB/km)': '0.2',
     'Perte connecteurs (dB)': '0.5',
     'Perte épissures (dB)': '0.1',
-    'Sensibilité récepteur (dBm)': '-25'
+    'Sensibilité récepteur (dBm)': '-28',
+    'Rapidité modulation (bauds)': '10000000',
+    'Valence': '2',
+    'Longueur d\'onde (nm)': '1550',
+    'Ouverture numérique': '0.14'
   },
-  'Faisceau Hertzien': { 
-    'Type liaison': 'Hertzien', 
-    'Portée (km)': '20',
-    'Longueur guide Tx (m)': '10',
-    'Longueur guide Rx (m)': '10',
-    'Perte guide (dB/100m)': '2.0',
-    'Perte branchements (dB)': '1.0'
+  'Faisceau Hertzien': {
+    'Type liaison': 'Hertzien',
+    'Portée (km)': '8',
+    'Longueur guide Tx (m)': '25',
+    'Longueur guide Rx (m)': '25',
+    'Perte guide (dB/100m)': '0.1',
+    'Perte branchements (dB)': '0.3',
+    'Perte câble (dB)': '2',
+    'Rapidité modulation (bauds)': '155000',
+    'Valence': '4',
+    'Polarisation': 'Verticale'
   },
-  'Liaison GSM': { 
-    'Type liaison': 'GSM', 
-    'Rayon cellule (km)': '15',
-    'Bande passante (MHz)': '25',
-    'Total fréquences': '124',
-    'Surface totale (km²)': '500',
-    'Surface cellule (km²)': '10',
-    'i': '0',
-    'j': '0',
-    'Frequencies': ''
-  },
-  'Liaison 5G': { 
-    'Type liaison': '5G', 
-    'Portée (km)': '5',
+  'Liaison 5G': {
+    'Type liaison': '5G',
+    'FrequencyBand': 'sub-6',
+    'Fréquence (MHz)': '3500',
     'Bande passante (MHz)': '100',
     'Couches MIMO': '64',
-    'Rapidité modulation (bauds)': '1000000',
-    'Valence': '256'
+    'Rayon cellule (km)': '1',
+    'Surface totale (km²)': '50',
+    'Perte câble (dB)': '3',
+    'Rapidité modulation (bauds)': '15000',
+    'Valence': '10',
+    'i': '3',
+    'j': '2',
+    'Numerology': '1',
+    'Modulation': '256QAM',
+    'Beamforming gain (dB)': '10'
   },
-  'Liaison RJ45': { 
-    'Type liaison': 'RJ45', 
-    'Portée (km)': '0.1'
+  'Liaison 4G': {
+    'Type liaison': '4G',
+    'Bande passante (MHz)': '20',
+    'Couches MIMO': '4',
+    'Rayon cellule (km)': '2',
+    'Surface totale (km²)': '100',
+    'Perte câble (dB)': '3',
+    'Rapidité modulation (bauds)': '10000',
+    'Valence': '6',
+    'i': '2',
+    'j': '1',
+    'Modulation': '64QAM',
+    'Code rate': '0.75'
+  },
+  'Liaison UMTS': {
+    'Type liaison': 'UMTS',
+    'Bande passante (MHz)': '5',
+    'Rayon cellule (km)': '3',
+    'Surface totale (km²)': '150',
+    'Perte câble (dB)': '2',
+    'Rapidité modulation (bauds)': '3840',
+    'Valence': '2',
+    'i': '1',
+    'j': '1',
+    'Facteur d\'étalement': '128'
+  },
+  'Liaison GSM': {
+    'Type liaison': 'GSM',
+    'Total fréquences': '124',
+    'Bande passante (kHz)': '200',
+    'Rayon cellule (km)': '10',
+    'Surface totale (km²)': '300',
+    'Perte câble (dB)': '2',
+    'i': '7',
+    'j': '4',
+    'Rapidité modulation (bauds)': '270833',
+    'Valence': '1'
+  },
+  'Liaison RJ45': {
+    'Type liaison': 'RJ45',
+    'Catégorie': 'Cat6a',
+    'Portée (km)': '0.1',
+    'Rapidité modulation (bauds)': '125000',
+    'Valence': '4',
+    'Impédance caractéristique (Ω)': '100',
+    'Atténuation (dB/100m)': '2.5',
+    'Fréquence maximale (MHz)': '500',
+    'Débit nominal (Mbps)': '1000'
   }
 };
+
 
 function LinkConfigPopup({ sourceNode, targetNode, saveConfig, closePopup, deleteEdge, updateEdgeConnection, edges, pendingConnection, selectedEdge, nodes = [] }) {
   const [params, setParams] = useState({});
